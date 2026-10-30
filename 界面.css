@@ -1,4 +1,4 @@
-/* 《找出唯一说得通的那个人》新版界面
+/* 《唯一解》新版界面
    接入口：window.CASES（数据_案件.js）+ window.SAVE（存档.js）
    不依赖任何框架；深浅两套质感靠 --paper / --bg 对比建立 */
 
@@ -253,7 +253,8 @@ a{color:inherit;text-decoration:none}
 /* ---------- 首页 ---------- */
 .home{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:36px 24px 90px}
 .home .eyebrow{font-size:10.5px;letter-spacing:.28em;color:var(--gold);margin-bottom:16px}
-.home h1{font-size:27px;line-height:1.42;margin:0 0 12px;letter-spacing:.01em;font-weight:700}
+.home h1{font-size:46px;line-height:1.1;margin:0 0 10px;letter-spacing:.08em;font-weight:700}
+.home .tagline{color:#c9d3df;font-size:15px;letter-spacing:.04em;margin:0 0 14px}
 .home .desc{color:var(--dim);font-size:13px;line-height:1.8;max-width:22em}
 .home .entry{display:flex;flex-direction:column;gap:11px;margin-top:30px}
 .entry a{
