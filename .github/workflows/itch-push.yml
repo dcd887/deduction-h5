@@ -9,15 +9,19 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: 安装 butler
+      - name: 安装 butler（从 GitHub Releases 取）
         run: |
-          curl -sL -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          set -euxo pipefail
+          curl -fsSL -o butler.zip \
+            https://github.com/itchio/butler/releases/download/v15.32.0/butler-linux-amd64.zip
+          ls -l butler.zip
           unzip -o -q butler.zip
           chmod +x butler
-          ./butler -v
+          ./butler version
 
       - name: 收拢网页文件到 dist
         run: |
+          set -euxo pipefail
           mkdir -p dist
           cp index.html 选案.html 游戏.html 玩法说明.html 界面.css 游戏.js 存档.js 数据_案件.js dist/
           ls -l dist
@@ -26,4 +30,5 @@ jobs:
         env:
           BUTLER_API_KEY: ${{ secrets.ITCH_API_KEY }}
         run: |
+          set -euxo pipefail
           ./butler push dist dcd2321/the-only-solution:html --userversion 1.0.0
