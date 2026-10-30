@@ -33,4 +33,4 @@ jobs:
           BUTLER_API_KEY: ${{ secrets.ITCH_API_KEY }}
         run: |
           set -euxo pipefail
-          "$BUTLER" push dist dcd2321/the-only-solution:html --userversion 1.0.0
+          "$BUTLER" push dist dcd2321/the-only-solution:html --userversion 1.0.1
