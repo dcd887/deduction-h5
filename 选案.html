@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>选案 · 找出唯一说得通的那个人</title>
+<link rel="stylesheet" href="界面.css">
+</head>
+<body>
+<div class="top"><div class="bar" style="--p:0%"></div>
+  <div class="in">
+    <a class="back" href="index.html">←</a>
+    <div><div class="title">选案</div><div class="sub">三个案子，各是一条独立的时间线</div></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="cases" id="cases"></div>
+  <div style="color:#6b7488;font-size:11px;margin:16px 2px;line-height:1.8">
+    进度自动存在本机浏览器里。随时关掉，下次接着来。
+  </div>
+</div>
+
+<script src="数据_案件.js"></script>
+<script src="存档.js"></script>
+<script>
+(function () {
+  var CASES = window.CASES || [];
+  var db = window.SAVE.overview();
+  var box = document.getElementById('cases');
+
+  function pct(c, st) {
+    if (!st) return 0;
+    var total = c.scene.length + (c.records || []).length + (c.suspects || []).length * 2;
+    var done = 0;
+    c.scene.forEach(function (s, i) { if (st.opened['S' + i]) done++; });
+    (c.records || []).forEach(function (r) { if (st.opened[r.id]) done++; });
+    (c.suspects || []).forEach(function (p) {
+      if (st.asked[p.name + '-2'] || st.asked[p.name + '-3']) done++;
+      if (st.asked[p.name + '-3']) done++;
+    });
+    return total ? Math.round(done / total * 100) : 0;
+  }
+
+  box.innerHTML = CASES.map(function (c, i) {
+    var st = (db.cases || {})[c.id];
+    var cleared = st && st.cleared;
+    var p = pct(c, st);
+    var status = cleared ? '已通关' : (p > 0 ? '进行中 · ' + p + '%' : '未开始');
+    var brief = (c.brief || '').split('\n')[0];
+    return '<a class="case" href="游戏.html?c=' + i + '">' +
+      '<div class="t"><div class="nm">' + (c.title || '案件') + '</div>' +
+      '<div class="lv">' + (c.difficulty || '') + '</div>' +
+      '<div class="st">' + status + '</div></div>' +
+      '<div class="d">' + brief + '</div>' +
+      '<div class="barh"><i style="width:' + (cleared ? 100 : p) + '%"></i></div>' +
+      '</a>';
+  }).join('');
+})();
+</script>
+</body>
+</html>
