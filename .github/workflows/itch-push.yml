@@ -16,7 +16,7 @@ jobs:
             https://github.com/itchio/butler/releases/download/v15.32.0/butler-linux-amd64.zip
           unzip -o -q butler.zip
           ls -R | head -20
-          BUTLER="$(find . -name butler -type f -perm -u+x | head -1)"
+          BUTLER="$(find . -name butler -type f ! -name "*.zip" | head -1)"
           chmod +x "$BUTLER"
           echo "BUTLER=$BUTLER" >> "$GITHUB_ENV"
           "$BUTLER" version
