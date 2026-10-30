@@ -1,0 +1,29 @@
+name: itch-push
+
+on:
+  workflow_dispatch:
+
+jobs:
+  push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 安装 butler
+        run: |
+          curl -sL -o butler.zip https://broth.itch.ovh/butler/linux-amd64/LATEST/archive/default
+          unzip -o -q butler.zip
+          chmod +x butler
+          ./butler -v
+
+      - name: 收拢网页文件到 dist
+        run: |
+          mkdir -p dist
+          cp index.html 选案.html 游戏.html 玩法说明.html 界面.css 游戏.js 存档.js 数据_案件.js dist/
+          ls -l dist
+
+      - name: 推送到 itch.io
+        env:
+          BUTLER_API_KEY: ${{ secrets.ITCH_API_KEY }}
+        run: |
+          ./butler push dist dcd2321/the-only-solution:html --userversion 1.0.0
